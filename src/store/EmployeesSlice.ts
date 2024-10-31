@@ -4,7 +4,8 @@ import axios from 'axios';
 interface Employee {
   id: number;
   name: string;
-  avatar?: string;
+  avatar: string;
+  position: string;
 }
 
 type RequestStatus = 'idle' | 'loading' | 'succeeded' | 'failed';

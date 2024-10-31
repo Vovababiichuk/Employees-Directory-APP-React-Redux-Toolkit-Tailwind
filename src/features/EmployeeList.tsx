@@ -18,7 +18,9 @@ const EmployeeList = () => {
     <div>
       {employees.map(employee => (
         <div key={employee.id}>
+          <img src={employee.avatar} alt="Avatar" />
           <p>{employee.name}</p>
+          <p>{employee.position}</p>
         </div>
       ))}
     </div>
