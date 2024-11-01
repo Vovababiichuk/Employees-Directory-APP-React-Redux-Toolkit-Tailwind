@@ -1,12 +1,17 @@
-import SearchInput from './features/ui/SearchInput';
-import BasicTabs from './features/ui/Tabs';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import EmployeeProfile from './features/employees/EmployeeProfile';
+import HomePage from './pages/home/HomePage';
 
 const App = () => {
   return (
-    <div className="p-4 pt-10">
-      <SearchInput />
-      <BasicTabs />
-    </div>
+    <Router>
+      <div className="bg-gray-200">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/employees/:id" element={<EmployeeProfile />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 

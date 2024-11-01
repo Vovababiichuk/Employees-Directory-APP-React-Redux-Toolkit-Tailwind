@@ -3,7 +3,7 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import React, { SyntheticEvent } from 'react';
 import { useDispatch } from 'react-redux';
-import { setPositionFilter } from '../../store/EmployeesSlice';
+import { setPositionFilter } from '../../../store/EmployeesSlice';
 import EmployeeList from '../EmployeeList';
 
 interface TabPanelProps {

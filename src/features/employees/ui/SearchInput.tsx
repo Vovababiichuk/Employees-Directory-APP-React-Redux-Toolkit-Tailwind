@@ -1,6 +1,6 @@
 import { FormControl, InputAdornment, InputBase } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { setSearchQuery } from '../../store/EmployeesSlice';
+import { setSearchQuery } from '../../../store/EmployeesSlice';
 import SearchIcon from '/icons/search.svg';
 import SegmentIcon from '/icons/segment.svg';
 
