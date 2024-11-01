@@ -15,15 +15,24 @@ const EmployeeList = () => {
   }, [dispatch, status]);
 
   return (
-    <div>
+    <ul className="flex flex-col gap-4">
       {employees.map(employee => (
-        <div key={employee.id}>
-          <img src={employee.avatar} alt="Avatar" />
-          <p>{employee.name}</p>
-          <p>{employee.position}</p>
-        </div>
+        <li className="flex items-center gap-4" key={employee.name}>
+          <img
+            className="rounded-full object-cover w-[72px] h-[72px]"
+            src={employee.avatar}
+            alt="Avatar"
+          />
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-1">
+              <span className="font-medium">{employee.name}</span>
+              <span className="text-primary-gray text-sm">{employee.tag}</span>
+            </div>
+            <span className="text-[13px] text-secondary-gray">{employee.position}</span>
+          </div>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };
 

@@ -6,6 +6,7 @@ interface Employee {
   name: string;
   avatar: string;
   position: string;
+  tag: string;
 }
 
 type RequestStatus = 'idle' | 'loading' | 'succeeded' | 'failed';
