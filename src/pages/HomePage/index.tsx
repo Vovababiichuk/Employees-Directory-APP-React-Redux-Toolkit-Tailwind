@@ -1,6 +1,6 @@
-import EmployeeList from '../../features/employees/EmployeeList';
-import SearchInput from '../../features/employees/ui/SearchInput';
-import BasicTabs from '../../features/employees/ui/Tabs';
+import EmployeeList from '@/features/EmployeeList';
+import BasicTabs from '@/features/Filter/BasicTabs';
+import SearchInput from '@/features/Filter/SearchInput';
 
 const HomePage = () => {
   return (

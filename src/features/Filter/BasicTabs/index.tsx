@@ -2,9 +2,9 @@ import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import React, { SyntheticEvent } from 'react';
-import { useDispatch } from 'react-redux';
-import { setPositionFilter } from '../../../store/EmployeesSlice';
-import EmployeeList from '../EmployeeList';
+// import { useDispatch } from 'react-redux';
+// import { setPositionFilter } from '../../../store/Employees';
+import EmployeeList from '@/features/EmployeeList';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -15,11 +15,11 @@ interface TabPanelProps {
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const handleChange = (event: SyntheticEvent, newValue: number) => {
-    dispatch(setPositionFilter(newValue));
-  };
+  // const handleChange = (event: SyntheticEvent, newValue: number) => {
+  //   dispatch(setPositionFilter(newValue));
+  // };
 
   return (
     <div

@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createLogger } from 'redux-logger';
-import employeesReducer from '../store/EmployeesSlice';
+import employeesReducer from '@/store/EmployeesSlice';
 
 const logger = createLogger({
   collapsed: true,

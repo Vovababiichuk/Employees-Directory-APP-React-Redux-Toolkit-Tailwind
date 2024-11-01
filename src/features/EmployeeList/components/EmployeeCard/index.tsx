@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { EmployeeTypes } from '../../types/types';
+import { EmployeeTypes } from '@/entities/employee/types';
 
 const EmployeeCard = ({ id, name, avatar, position, tag }: EmployeeTypes) => {
   return (

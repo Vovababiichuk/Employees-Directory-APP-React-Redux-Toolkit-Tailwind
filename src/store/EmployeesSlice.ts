@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { EmployeeTypes } from '../types/types';
+import { EmployeeTypes } from '@/entities/employee/types';
 
 type RequestStatus = 'idle' | 'loading' | 'succeeded' | 'failed';
 
@@ -60,8 +60,9 @@ const employeesSlice = createSlice({
         state.status = 'succeeded';
         state.employees = action.payload;
       })
-      .addCase(fetchEmployees.rejected, state => {
+      .addCase(fetchEmployees.rejected, (state, action) => {
         state.status = 'failed';
+        state.error = action.error.message || null;
       });
 
     builder
@@ -72,8 +73,9 @@ const employeesSlice = createSlice({
         state.status = 'succeeded';
         state.selectedEmployee = action.payload;
       })
-      .addCase(fetchEmployeeById.rejected, state => {
+      .addCase(fetchEmployeeById.rejected, (state, action) => {
         state.status = 'failed';
+        state.error = action.error.message || null;
       });
   },
 });

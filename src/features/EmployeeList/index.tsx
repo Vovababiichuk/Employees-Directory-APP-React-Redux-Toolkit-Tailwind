@@ -2,10 +2,10 @@ import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import ErrorPage from '../../shared/error/ErrorPage';
-import { fetchEmployees } from '../../store/EmployeesSlice';
-import { AppDispatch, RootState } from '../../store/store';
-import EmployeeCard from './EmployeeCard';
+import EmployeeCard from '@/features/EmployeeList/components/EmployeeCard';
+import ErrorPage from '@/pages//ErrorPage';
+import { fetchEmployees } from '@/store/EmployeesSlice';
+import { AppDispatch, RootState } from '@/store/store';
 
 const EmployeeList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -18,7 +18,7 @@ const EmployeeList = () => {
   return (
     <ul className="flex flex-col gap-4">
       {status === 'loading' ? (
-        Array(10)
+        Array(17)
           .fill(0)
           .map((_, index) => (
             <Box key={index} display="flex" alignItems="center" gap={2}>
@@ -30,7 +30,7 @@ const EmployeeList = () => {
             </Box>
           ))
       ) : status === 'failed' ? (
-        <ErrorPage />
+        <ErrorPage message={error || 'Failed to load employee data'} />
       ) : (
         employees.map(employee => <EmployeeCard key={employee.name} {...employee} />)
       )}
