@@ -6,6 +6,7 @@ import ProfileSkeleton from '@/features/EmployeeProfile/components/SkeletonProfi
 import ErrorPage from '@/pages/ErrorPage/index';
 import { fetchEmployeeById } from '@/store/EmployeesSlice';
 import { AppDispatch, RootState } from '@/store/store';
+import { Statuses } from '@/utils';
 import ArrowLeftIcon from '/icons/arrow-left.svg';
 import PhoneIcon from '/icons/phone.svg';
 import StarIcon from '/icons/star.svg';
@@ -13,22 +14,25 @@ import StarIcon from '/icons/star.svg';
 const EmployeeProfile = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
-  const { status, error, selectedEmployee } = useSelector((state: RootState) => state.employees);
+  const { status, error, employees } = useSelector((state: RootState) => state.employees);
+  const { selected } = employees;
 
   useEffect(() => {
     if (id) dispatch(fetchEmployeeById(id));
   }, [dispatch, id]);
 
-  const { name, avatar, position, tag, birthDate, phone } = selectedEmployee || {};
+  const { name, avatar, position, tag, birthDate, phone } = selected || {};
+
+  console.log(name);
 
   const birthDateFormatted = birthDate && format(new Date(birthDate), 'd MMMM yyyy');
   const age = birthDate && differenceInYears(new Date(), new Date(birthDate));
 
   return (
     <div className="max-w-6xl mx-auto bg-white min-h-screen">
-      {status === 'loading' ? (
+      {status === Statuses.LOADING ? (
         <ProfileSkeleton />
-      ) : status === 'failed' ? (
+      ) : status === Statuses.FAILED ? (
         <ErrorPage message={error || 'Failed to load employee data'} />
       ) : (
         <div>
