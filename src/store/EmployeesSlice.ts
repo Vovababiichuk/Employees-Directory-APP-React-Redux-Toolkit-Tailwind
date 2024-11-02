@@ -9,7 +9,7 @@ type EmployeesState = {
   status: RequestStatus;
   error: string | null;
   searchQuery: string;
-  positionFilter: number;
+  positionFilter: string;
   selectedEmployee: EmployeeTypes | null;
 };
 
@@ -18,7 +18,7 @@ const initialState: EmployeesState = {
   status: 'idle',
   error: null,
   searchQuery: '',
-  positionFilter: 0,
+  positionFilter: 'All',
   selectedEmployee: null,
 };
 
@@ -47,7 +47,7 @@ const employeesSlice = createSlice({
     setSearchQuery(state, action: PayloadAction<string>) {
       state.searchQuery = action.payload;
     },
-    setPositionFilter(state, action: PayloadAction<number>) {
+    setPositionFilter(state, action: PayloadAction<string>) {
       state.positionFilter = action.payload;
     },
   },

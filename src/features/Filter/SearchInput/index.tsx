@@ -7,8 +7,8 @@ import SegmentIcon from '/icons/segment.svg';
 const SearchInput = () => {
   const dispatch = useDispatch();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSearchQuery(event.target.value));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setSearchQuery(e.target.value));
   };
 
   return (

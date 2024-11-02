@@ -2,24 +2,19 @@ import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import React, { SyntheticEvent } from 'react';
-// import { useDispatch } from 'react-redux';
-// import { setPositionFilter } from '../../../store/Employees';
+import { useDispatch } from 'react-redux';
 import EmployeeList from '@/features/EmployeeList';
+import { setPositionFilter } from '@/store/EmployeesSlice';
+import { AppDispatch } from '@/store/store';
 
 interface TabPanelProps {
   children?: React.ReactNode;
-  index: number;
-  value: number;
+  index: string;
+  value: string;
 }
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
-
-  // const dispatch = useDispatch();
-
-  // const handleChange = (event: SyntheticEvent, newValue: number) => {
-  //   dispatch(setPositionFilter(newValue));
-  // };
 
   return (
     <div
@@ -34,18 +29,22 @@ function CustomTabPanel(props: TabPanelProps) {
   );
 }
 
-function a11yProps(index: number) {
+function a11yProps(name: string) {
   return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    id: `simple-tab-${name}`,
+    'aria-controls': `simple-tabpanel-${name}`,
   };
 }
 
 export default function BasicTabs() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState('All');
+  const dispatch = useDispatch<AppDispatch>();
 
-  const handleChange = (_: SyntheticEvent, newValue: number) => {
+  const positionsTabs = ['All', 'Designer', 'Analyst', 'Manager', 'iOS', 'Android'];
+
+  const handleChange = (_: SyntheticEvent, newValue: string) => {
     setValue(newValue);
+    dispatch(setPositionFilter(newValue));
   };
 
   return (
@@ -67,32 +66,21 @@ export default function BasicTabs() {
             '& .MuiTabs-indicator': { backgroundColor: '#6534FF' },
           }}
         >
-          <Tab label="All" {...a11yProps(0)} />
-          <Tab label="Designers" {...a11yProps(1)} />
-          <Tab label="Analysts" {...a11yProps(2)} />
-          <Tab label="Managers" {...a11yProps(3)} />
-          <Tab label="iOS" {...a11yProps(4)} />
-          <Tab label="Android" {...a11yProps(5)} />
+          {positionsTabs.map(positionTab => (
+            <Tab
+              key={positionTab}
+              label={positionTab}
+              value={positionTab}
+              {...a11yProps(positionTab)}
+            />
+          ))}
         </Tabs>
       </Box>
-      <CustomTabPanel value={value} index={0}>
-        <EmployeeList />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        Designers
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        Analysts
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={3}>
-        Managers
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={4}>
-        iOS
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={5}>
-        Android
-      </CustomTabPanel>
+      {positionsTabs.map(positionTab => (
+        <CustomTabPanel key={positionTab} value={value} index={positionTab}>
+          <EmployeeList />
+        </CustomTabPanel>
+      ))}
     </Box>
   );
 }

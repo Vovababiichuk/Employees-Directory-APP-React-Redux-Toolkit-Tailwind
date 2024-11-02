@@ -9,11 +9,24 @@ import { AppDispatch, RootState } from '@/store/store';
 
 const EmployeeList = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { employees, status, error } = useSelector((state: RootState) => state.employees);
+  const { employees, status, error, searchQuery, positionFilter } = useSelector(
+    (state: RootState) => state.employees,
+  );
 
   useEffect(() => {
     if (status === 'idle') dispatch(fetchEmployees());
   }, [status, dispatch]);
+
+  const filteredEmployees = employees.filter(employee => {
+    const searchMatches = [employee.name, employee.email, employee.tag].some(field =>
+      field.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+
+    const positionMatches =
+      positionFilter === 'All' || employee.position.toLowerCase() === positionFilter.toLowerCase();
+
+    return searchMatches && positionMatches;
+  });
 
   return (
     <ul className="flex flex-col gap-4">
@@ -32,7 +45,7 @@ const EmployeeList = () => {
       ) : status === 'failed' ? (
         <ErrorPage message={error || 'Failed to load employee data'} />
       ) : (
-        employees.map(employee => <EmployeeCard key={employee.name} {...employee} />)
+        filteredEmployees.map(employee => <EmployeeCard key={employee.name} {...employee} />)
       )}
     </ul>
   );
