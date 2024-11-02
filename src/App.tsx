@@ -3,6 +3,7 @@ import EmployeeProfile from './features/EmployeeProfile/index';
 import HomePage from './pages/HomePage/index';
 
 const App = () => {
+  console.log('App RENDER');
   return (
     <Router>
       <div className="bg-gray-200">

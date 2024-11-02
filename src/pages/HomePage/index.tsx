@@ -3,6 +3,7 @@ import BasicTabs from '@/features/Filter/BasicTabs';
 import SearchInput from '@/features/Filter/SearchInput';
 
 const HomePage = () => {
+  console.log('HomePage RENDER');
   return (
     <div className="max-w-6xl mx-auto bg-white pt-8 p-4">
       <SearchInput />

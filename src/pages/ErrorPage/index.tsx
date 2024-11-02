@@ -1,17 +1,19 @@
-import { Link } from 'react-router-dom';
+import FlyIcon from '/img/fly.png';
 
-interface ErrorPageProps {
-  message: string;
-}
-
-const ErrorPage = ({ message }: ErrorPageProps) => {
+const ErrorPage = ({ message }: { message: string }) => {
+  console.log('ErrorPage ONE!!!', message);
   return (
     <div className="flex flex-col items-center">
+      <img src={FlyIcon} alt="" />
       <h2 className="text-lg font-semibold mb-2">Unexpected error occurred...</h2>
       <span className="text-primary-gray mb-4">{message}</span>{' '}
-      <Link className="text-primary-blue underline" to="/">
+      <button
+        onClick={() => window.location.reload()}
+        className="text-primary-blue underline"
+        type="reset"
+      >
         Reload page
-      </Link>
+      </button>
     </div>
   );
 };

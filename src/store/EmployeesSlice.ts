@@ -2,11 +2,9 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { EmployeeTypes } from '@/entities/employee/types';
 
-type RequestStatus = 'idle' | 'loading' | 'succeeded' | 'failed';
-
 type EmployeesState = {
   employees: EmployeeTypes[];
-  status: RequestStatus;
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
   searchQuery: string;
   positionFilter: string;
@@ -22,11 +20,12 @@ const initialState: EmployeesState = {
   selectedEmployee: null,
 };
 
-const SERVER_URL = 'https://66a0f8b17053166bcabd894e.mockapi.io/api/workers';
+const SERVER_URL = 'https://66a0f8b17053166bcabd894e.mokapi.io/api/workers';
 
 export const fetchEmployees = createAsyncThunk<EmployeeTypes[]>(
   'employees/fetchEmployees',
   async () => {
+    console.log('fetchEmployees in Slice RENDER');
     const response = await axios.get<EmployeeTypes[]>(`${SERVER_URL}`);
     return response.data;
   },
