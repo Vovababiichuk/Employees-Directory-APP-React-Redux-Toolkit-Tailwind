@@ -20,22 +20,21 @@ const initialState: EmployeesState = {
   selectedEmployee: null,
 };
 
-const SERVER_URL = 'https://66a0f8b17053166bcabd894e.mokapi.io/api/workers';
+const SERVER_URL = 'https://66a0f8b17053166bcabd894e.mocapi.io/api/workers';
 
 export const fetchEmployees = createAsyncThunk<EmployeeTypes[]>(
   'employees/fetchEmployees',
   async () => {
-    console.log('fetchEmployees in Slice RENDER');
-    const response = await axios.get<EmployeeTypes[]>(`${SERVER_URL}`);
-    return response.data;
+    const res = await axios.get<EmployeeTypes[]>(`${SERVER_URL}`);
+    return res.data;
   },
 );
 
 export const fetchEmployeeById = createAsyncThunk<EmployeeTypes, string>(
   'employees/fetchEmployeeById',
   async id => {
-    const response = await axios.get<EmployeeTypes>(`${SERVER_URL}/${id}`);
-    return response.data;
+    const res = await axios.get<EmployeeTypes>(`${SERVER_URL}/${id}`);
+    return res.data;
   },
 );
 

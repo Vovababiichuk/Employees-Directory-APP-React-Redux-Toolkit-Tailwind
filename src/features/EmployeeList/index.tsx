@@ -8,14 +8,12 @@ import { fetchEmployees } from '@/store/EmployeesSlice';
 import { AppDispatch, RootState } from '@/store/store';
 
 const EmployeeList = () => {
-  console.log('EmployeeList RENDER');
   const dispatch = useDispatch<AppDispatch>();
   const { employees, status, error, searchQuery, positionFilter } = useSelector(
     (state: RootState) => state.employees,
   );
 
   useEffect(() => {
-    console.log('fetchEmployees in useEffect RENDER');
     if (status === 'idle') dispatch(fetchEmployees());
   }, [status, dispatch]);
 
@@ -45,9 +43,7 @@ const EmployeeList = () => {
             </Box>
           ))
       ) : status === 'failed' ? (
-        <li className="flex flex-col items-center justify-center h-screen">
-          <ErrorPage message={error || 'Failed to load employee data'} />
-        </li>
+        <ErrorPage message={error || 'Failed to load employee data'} />
       ) : (
         filteredEmployees.map(employee => <EmployeeCard key={employee.name} {...employee} />)
       )}
