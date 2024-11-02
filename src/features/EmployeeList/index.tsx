@@ -44,6 +44,8 @@ const EmployeeList = () => {
           ))
       ) : status === 'failed' ? (
         <ErrorPage message={error || 'Failed to load employee data'} />
+      ) : filteredEmployees.length === 0 ? (
+        <ErrorPage message="Try to adjust your request" />
       ) : (
         filteredEmployees.map(employee => <EmployeeCard key={employee.name} {...employee} />)
       )}

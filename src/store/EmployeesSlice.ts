@@ -20,7 +20,7 @@ const initialState: EmployeesState = {
   selectedEmployee: null,
 };
 
-const SERVER_URL = 'https://66a0f8b17053166bcabd894e.mocapi.io/api/workers';
+const SERVER_URL = 'https://66a0f8b17053166bcabd894e.mockapi.io/api/workers';
 
 export const fetchEmployees = createAsyncThunk<EmployeeTypes[]>(
   'employees/fetchEmployees',
