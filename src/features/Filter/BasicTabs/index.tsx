@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import React, { SyntheticEvent } from 'react';
+import React, { SyntheticEvent, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import EmployeeList from '@/features/EmployeeList';
 import { setPositionFilter } from '@/store/EmployeesSlice';
@@ -13,7 +13,7 @@ interface TabPanelProps {
   value: string;
 }
 
-function CustomTabPanel(props: TabPanelProps) {
+const CustomTabPanel = React.memo((props: TabPanelProps) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -27,7 +27,7 @@ function CustomTabPanel(props: TabPanelProps) {
       {value === index && <Box sx={{ paddingTop: 3 }}>{children}</Box>}
     </div>
   );
-}
+});
 
 function a11yProps(name: string) {
   return {
@@ -37,14 +37,28 @@ function a11yProps(name: string) {
 }
 
 export default function BasicTabs() {
-  const [value, setValue] = React.useState('All');
+  const [value, setValue] = React.useState(() => {
+    return localStorage.getItem('activeTab') || 'All';
+  });
   const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    localStorage.setItem('activeTab', value);
+  }, [value]);
 
   const positionsTabs = ['All', 'Designer', 'Analyst', 'Manager', 'iOS', 'Android'];
 
   const handleChange = (_: SyntheticEvent, newValue: string) => {
     setValue(newValue);
     dispatch(setPositionFilter(newValue));
+
+    const url = new URL(window.location.href);
+    if (newValue !== 'All') {
+      url.searchParams.set('tab', newValue);
+    } else {
+      url.searchParams.delete('tab');
+    }
+    window.history.pushState({}, '', url);
   };
 
   return (

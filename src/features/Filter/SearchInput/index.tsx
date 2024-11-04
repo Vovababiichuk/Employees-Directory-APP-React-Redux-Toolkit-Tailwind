@@ -11,21 +11,40 @@ import {
   Radio,
   RadioGroup,
 } from '@mui/material';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { setSearchQuery, setSortOption } from '@/store/EmployeesSlice';
+import { AppDispatch, RootState } from '@/store/store';
 import SearchIcon from '/icons/search.svg';
 import SegmentIcon from '/icons/segment.svg';
 
 const SearchInput = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  const { searchQuery } = useSelector((state: RootState) => state.employees);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<'alphabetical' | 'birthdate'>(
     'alphabetical',
   );
 
+  useEffect(() => {
+    const savedSearchQuery = localStorage.getItem('searchQuery');
+    if (savedSearchQuery) {
+      dispatch(setSearchQuery(savedSearchQuery));
+    }
+  }, [dispatch]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSearchQuery(e.target.value));
+    const searchValue = e.target.value;
+    dispatch(setSearchQuery(searchValue));
+    localStorage.setItem('searchQuery', searchValue);
+
+    const url = new URL(window.location.href);
+    if (searchValue) {
+      url.searchParams.set('search', searchValue);
+    } else {
+      url.searchParams.delete('search');
+    }
+    window.history.pushState({}, '', url);
   };
 
   const handleSortClick = () => {
@@ -51,6 +70,7 @@ const SearchInput = () => {
         id="my-input"
         aria-describedby="my-helper-text"
         placeholder="Search by name, tag, email..."
+        value={searchQuery}
         sx={{
           py: '8px',
           px: '12px',
@@ -74,7 +94,7 @@ const SearchInput = () => {
         onChange={handleChange}
       />
 
-      <Dialog open={dialogOpen} onClose={handleSortClose}>
+      <Dialog open={dialogOpen} onClose={handleSortClose} sx={{ fontFamily: 'Inter, sans-serif' }}>
         <DialogTitle>Sort Options</DialogTitle>
         <DialogContent>
           <RadioGroup value={selectedOption} onChange={handleSortOptionChange}>
