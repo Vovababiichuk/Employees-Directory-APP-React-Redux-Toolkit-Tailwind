@@ -1,4 +1,3 @@
-import { differenceInYears, format } from 'date-fns';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
@@ -6,7 +5,7 @@ import ProfileSkeleton from '@/features/EmployeeProfile/components/SkeletonProfi
 import ErrorPage from '@/pages/ErrorPage/index';
 import { fetchEmployeeById } from '@/store/EmployeesSlice';
 import { AppDispatch, RootState } from '@/store/store';
-import { Statuses } from '@/utils';
+import { calculateAge, formatDate, Statuses } from '@/utils';
 import ArrowLeftIcon from '/icons/arrow-left.svg';
 import PhoneIcon from '/icons/phone.svg';
 import StarIcon from '/icons/star.svg';
@@ -23,10 +22,8 @@ const EmployeeProfile = () => {
 
   const { name, avatar, position, tag, birthDate, phone } = selected || {};
 
-  console.log(name);
-
-  const birthDateFormatted = birthDate && format(new Date(birthDate), 'd MMMM yyyy');
-  const age = birthDate && differenceInYears(new Date(), new Date(birthDate));
+  const birthDateFormatted = birthDate ? formatDate(birthDate, 'd MMMM yyyy') : '';
+  const age = calculateAge(birthDate);
 
   return (
     <div className="max-w-6xl mx-auto bg-white min-h-screen">
@@ -62,7 +59,7 @@ const EmployeeProfile = () => {
                 <img src={StarIcon} alt="Star icon" width={20} height={20} />
                 {birthDateFormatted}
               </span>
-              <span>{age} years</span>
+              <span className="text-[15px] text-secondary-gray">{age} years</span>
             </div>
             <span className="flex items-center gap-2">
               <img src={PhoneIcon} alt="Phone icon" width={20} height={20} />

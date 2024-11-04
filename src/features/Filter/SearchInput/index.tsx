@@ -1,30 +1,17 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControl,
-  FormControlLabel,
-  InputAdornment,
-  InputBase,
-  Radio,
-  RadioGroup,
-} from '@mui/material';
+import { FormControl, InputAdornment, InputBase } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchQuery, setSortOption } from '@/store/EmployeesSlice';
 import { AppDispatch, RootState } from '@/store/store';
+import SortDialog from './components/SortDialog';
 import SearchIcon from '/icons/search.svg';
 import SegmentIcon from '/icons/segment.svg';
 
 const SearchInput = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { searchQuery } = useSelector((state: RootState) => state.employees);
+  const { searchQuery, sortOption } = useSelector((state: RootState) => state.employees);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<'alphabetical' | 'birthdate'>(
-    'alphabetical',
-  );
+  const [selectedOption, setSelectedOption] = useState<'alphabetical' | 'birthdate'>(sortOption);
 
   useEffect(() => {
     const savedSearchQuery = localStorage.getItem('searchQuery');
@@ -55,13 +42,9 @@ const SearchInput = () => {
     setDialogOpen(false);
   };
 
-  const handleSortOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedOption(event.target.value as 'alphabetical' | 'birthdate');
-  };
-
-  const handleSortConfirm = () => {
-    dispatch(setSortOption(selectedOption));
-    handleSortClose();
+  const handleSortOptionChange = (value: 'alphabetical' | 'birthdate') => {
+    setSelectedOption(value);
+    dispatch(setSortOption(value));
   };
 
   return (
@@ -71,6 +54,7 @@ const SearchInput = () => {
         aria-describedby="my-helper-text"
         placeholder="Search by name, tag, email..."
         value={searchQuery}
+        onChange={handleChange}
         sx={{
           py: '8px',
           px: '12px',
@@ -91,28 +75,15 @@ const SearchInput = () => {
             <img src={SegmentIcon} alt="Segment" className="w-7 h-5" />
           </InputAdornment>
         }
-        onChange={handleChange}
       />
-
-      <Dialog open={dialogOpen} onClose={handleSortClose} sx={{ fontFamily: 'Inter, sans-serif' }}>
-        <DialogTitle>Sort Options</DialogTitle>
-        <DialogContent>
-          <RadioGroup value={selectedOption} onChange={handleSortOptionChange}>
-            <FormControlLabel
-              value="alphabetical"
-              control={<Radio />}
-              label="Sort by Alphabetical"
-            />
-            <FormControlLabel value="birthdate" control={<Radio />} label="Sort by Birthdate" />
-          </RadioGroup>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleSortClose}>Cancel</Button>
-          <Button onClick={handleSortConfirm} color="primary">
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <SortDialog
+        dialogOpen={dialogOpen}
+        handleSortClose={handleSortClose}
+        selectedOption={selectedOption}
+        handleSortOptionChange={value =>
+          handleSortOptionChange(value as 'alphabetical' | 'birthdate')
+        }
+      />
     </FormControl>
   );
 };
