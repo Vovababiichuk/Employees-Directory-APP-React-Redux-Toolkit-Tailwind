@@ -24,7 +24,7 @@ const EmployeeCard = ({
   const birthYearFormatted = birthDate ? formatDate(birthDate, 'yyyy') : '';
 
   return (
-    <div className="">
+    <div className="hover:bg-primary-input-bg transition-colors duration-200">
       {sortOption === SortOptions.BIRTHDATE && isLastInGroup && (
         <div className="flex items-center my-4">
           <Divider sx={{ flexGrow: 1, mr: 6 }} />
