@@ -1,8 +1,9 @@
 import { FormControl, InputAdornment, InputBase } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSearchQuery, setSortOption } from '@/store/EmployeesSlice';
-import { AppDispatch, RootState } from '@/store/store';
+import { setSearchQuery, setSortOption } from '@/common/store/EmployeesSlice';
+import { AppDispatch, RootState } from '@/common/store/store';
+import { SortOptions } from '@/common/utils/utils';
 import SortDialog from './components/SortDialog';
 import SearchIcon from '/icons/search.svg';
 import SegmentIcon from '/icons/segment.svg';
@@ -42,7 +43,7 @@ const SearchInput = () => {
     setDialogOpen(false);
   };
 
-  const handleSortOptionChange = (value: 'alphabetical' | 'birthdate') => {
+  const handleSortOptionChange = (value: SortOptions) => {
     setSelectedOption(value);
     dispatch(setSortOption(value));
   };
@@ -80,9 +81,7 @@ const SearchInput = () => {
         dialogOpen={dialogOpen}
         handleSortClose={handleSortClose}
         selectedOption={selectedOption}
-        handleSortOptionChange={value =>
-          handleSortOptionChange(value as 'alphabetical' | 'birthdate')
-        }
+        handleSortOptionChange={value => handleSortOptionChange(value as SortOptions)}
       />
     </FormControl>
   );

@@ -1,9 +1,15 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios, { AxiosError } from 'axios';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { fetchEmployeeById, fetchEmployees } from '@/common/utils/gateway';
+import {
+  loadFromLocalStorage,
+  loadSortOption,
+  saveToLocalStorage,
+  SortOptions,
+  Statuses,
+} from '@/common/utils/utils';
 import { EmployeeTypes } from '@/entities/employee/types';
-import { SortOptions, Statuses } from '@/utils';
 
-type EmployeesState = {
+export type EmployeesState = {
   employees: {
     list: EmployeeTypes[];
     selected: EmployeeTypes | null;
@@ -12,64 +18,7 @@ type EmployeesState = {
   error: string | null;
   searchQuery: string;
   positionFilter: string;
-  sortOption: 'alphabetical' | 'birthdate';
-};
-
-const API_URL = 'https://66a0f8b17053166bcabd894e.mockapi.io/api/workers';
-
-const saveToLocalStorage = <T>(key: string, value: T) => {
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch (error) {
-    console.error('Error saving to localStorage:', error);
-  }
-};
-
-const loadFromLocalStorage = (key: string) => {
-  const item = localStorage.getItem(key);
-  if (item) {
-    try {
-      return JSON.parse(item);
-    } catch (error) {
-      console.error('Failed to parse JSON from localStorage', error);
-      return null;
-    }
-  }
-  return null;
-};
-
-export const fetchEmployees = createAsyncThunk<EmployeeTypes[], void, { rejectValue: string }>(
-  'employees/fetchEmployees',
-  async (_, { rejectWithValue }) => {
-    try {
-      const res = await axios.get<EmployeeTypes[]>(API_URL);
-      return res.data;
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      return rejectWithValue(axiosError.message || 'Failed to fetch employees');
-    }
-  },
-);
-
-export const fetchEmployeeById = createAsyncThunk<EmployeeTypes, string, { rejectValue: string }>(
-  'employees/fetchEmployeeById',
-  async (id, { rejectWithValue }) => {
-    try {
-      const response = await axios.get<EmployeeTypes>(`${API_URL}/${id}`);
-      return response.data;
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      return rejectWithValue(axiosError.message || 'Failed to fetch employee');
-    }
-  },
-);
-
-const loadSortOption = (): EmployeesState['sortOption'] => {
-  const sortOption = loadFromLocalStorage('sortOption');
-  if (sortOption === SortOptions.ALPHABETICAL || sortOption === SortOptions.BIRTHDATE) {
-    return sortOption;
-  }
-  return SortOptions.ALPHABETICAL;
+  sortOption: SortOptions;
 };
 
 const initialState: EmployeesState = {
@@ -96,7 +45,7 @@ const employeesSlice = createSlice({
       state.positionFilter = action.payload;
       saveToLocalStorage('positionFilter', action.payload);
     },
-    setSortOption(state, action: PayloadAction<'alphabetical' | 'birthdate'>) {
+    setSortOption(state, action: PayloadAction<SortOptions>) {
       state.sortOption = action.payload;
       saveToLocalStorage('sortOption', action.payload);
     },
@@ -117,9 +66,6 @@ const employeesSlice = createSlice({
       .addCase(fetchEmployees.rejected, (state, action) => {
         state.status = Statuses.FAILED;
         state.error = action.payload || 'Failed to fetch employees';
-      })
-      .addCase(fetchEmployeeById.pending, state => {
-        state.status = Statuses.LOADING;
       })
       .addCase(fetchEmployeeById.fulfilled, (state, action) => {
         state.status = Statuses.SUCCEEDED;

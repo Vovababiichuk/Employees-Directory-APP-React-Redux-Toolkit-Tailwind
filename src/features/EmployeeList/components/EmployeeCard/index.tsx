@@ -1,9 +1,9 @@
 import { Divider } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { RootState } from '@/common/store/store';
+import { formatDate, SortOptions } from '@/common/utils/utils';
 import { EmployeeTypes } from '@/entities/employee/types';
-import { RootState } from '@/store/store';
-import { formatDate, SortOptions } from '@/utils';
 
 interface EmployeeCardProps extends EmployeeTypes {
   isLastInGroup: boolean;

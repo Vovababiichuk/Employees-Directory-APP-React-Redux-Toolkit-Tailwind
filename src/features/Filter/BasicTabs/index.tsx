@@ -3,9 +3,9 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import React, { SyntheticEvent, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { setPositionFilter } from '@/common/store/EmployeesSlice';
+import { AppDispatch } from '@/common/store/store';
 import EmployeeList from '@/features/EmployeeList';
-import { setPositionFilter } from '@/store/EmployeesSlice';
-import { AppDispatch } from '@/store/store';
 
 interface TabPanelProps {
   children?: React.ReactNode;

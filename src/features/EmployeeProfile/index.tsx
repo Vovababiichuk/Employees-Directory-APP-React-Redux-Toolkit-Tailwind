@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
+import { AppDispatch, RootState } from '@/common/store/store';
+import { fetchEmployeeById } from '@/common/utils/gateway';
+import { calculateAge, formatDate, Statuses } from '@/common/utils/utils';
 import ProfileSkeleton from '@/features/EmployeeProfile/components/SkeletonProfile';
 import ErrorPage from '@/pages/ErrorPage/index';
-import { fetchEmployeeById } from '@/store/EmployeesSlice';
-import { AppDispatch, RootState } from '@/store/store';
-import { calculateAge, formatDate, Statuses } from '@/utils';
 import ArrowLeftIcon from '/icons/arrow-left.svg';
 import PhoneIcon from '/icons/phone.svg';
 import StarIcon from '/icons/star.svg';

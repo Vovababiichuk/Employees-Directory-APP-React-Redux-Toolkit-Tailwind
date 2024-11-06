@@ -1,14 +1,14 @@
 import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
-import { compareAsc } from 'date-fns';
+import { compareAsc, getYear } from 'date-fns';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/common/store/store';
+import { fetchEmployees } from '@/common/utils/gateway';
+import { SortOptions, Statuses } from '@/common/utils/utils';
 import { EmployeeTypes } from '@/entities/employee/types';
 import EmployeeCard from '@/features/EmployeeList/components/EmployeeCard';
-import ErrorPage from '@/pages//ErrorPage';
-import { fetchEmployees } from '@/store/EmployeesSlice';
-import { AppDispatch, RootState } from '@/store/store';
-import { SortOptions, Statuses } from '@/utils';
+import ErrorPage from '@/pages/ErrorPage';
 
 const EmployeeList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -31,19 +31,16 @@ const EmployeeList = () => {
     return searchMatches && positionMatches;
   });
 
-  const sortedEmployees = filteredEmployees.sort((a: EmployeeTypes, b: EmployeeTypes) => {
-    if (sortOption === SortOptions.ALPHABETICAL) {
-      return a.name.localeCompare(b.name);
-    } else if (sortOption === SortOptions.BIRTHDATE) {
-      return compareAsc(new Date(a.birthDate), new Date(b.birthDate));
-    }
-    return 0;
-  });
+  const sortedEmployees = filteredEmployees.sort((a, b) =>
+    sortOption === SortOptions.ALPHABETICAL
+      ? a.name.localeCompare(b.name)
+      : compareAsc(new Date(a.birthDate), new Date(b.birthDate)),
+  );
 
   const employeesWithLastInGroupFlag = sortedEmployees.map((employee, index, arr) => {
-    const currentYear = new Date(employee.birthDate).getFullYear();
+    const currentYear = getYear(new Date(employee.birthDate));
     const isLastInGroup =
-      index === arr.length - 1 || new Date(arr[index + 1].birthDate).getFullYear() !== currentYear;
+      index === arr.length - 1 || getYear(new Date(arr[index + 1].birthDate)) !== currentYear;
     return { ...employee, isLastInGroup };
   });
 
