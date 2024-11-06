@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
 import { EmployeeTypes } from '@/entities/employee/types';
-import { Statuses } from '@/utils';
+import { SortOptions, Statuses } from '@/utils';
 
 type EmployeesState = {
   employees: {
@@ -64,6 +64,14 @@ export const fetchEmployeeById = createAsyncThunk<EmployeeTypes, string, { rejec
   },
 );
 
+const loadSortOption = (): EmployeesState['sortOption'] => {
+  const sortOption = loadFromLocalStorage('sortOption');
+  if (sortOption === SortOptions.ALPHABETICAL || sortOption === SortOptions.BIRTHDATE) {
+    return sortOption;
+  }
+  return SortOptions.ALPHABETICAL;
+};
+
 const initialState: EmployeesState = {
   employees: {
     list: [],
@@ -73,8 +81,7 @@ const initialState: EmployeesState = {
   error: null,
   searchQuery: loadFromLocalStorage('searchQuery') || '',
   positionFilter: loadFromLocalStorage('positionFilter') || 'All',
-  sortOption:
-    (loadFromLocalStorage('sortOption') as 'alphabetical' | 'birthdate') || 'alphabetical',
+  sortOption: loadSortOption(),
 };
 
 const employeesSlice = createSlice({

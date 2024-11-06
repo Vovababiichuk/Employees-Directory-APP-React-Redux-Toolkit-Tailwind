@@ -7,6 +7,11 @@ export const Statuses = {
   FAILED: 'FAILED',
 } as const;
 
+export const SortOptions = {
+  ALPHABETICAL: 'alphabetical',
+  BIRTHDATE: 'birthdate',
+} as const;
+
 export const formatDate = (date: string | Date | undefined, formatString: string): string => {
   if (!date) {
     throw new Error('Invalid date: date must be provided');

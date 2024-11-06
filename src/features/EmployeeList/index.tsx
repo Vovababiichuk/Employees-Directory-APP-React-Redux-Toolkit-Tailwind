@@ -8,7 +8,7 @@ import EmployeeCard from '@/features/EmployeeList/components/EmployeeCard';
 import ErrorPage from '@/pages//ErrorPage';
 import { fetchEmployees } from '@/store/EmployeesSlice';
 import { AppDispatch, RootState } from '@/store/store';
-import { Statuses } from '@/utils';
+import { SortOptions, Statuses } from '@/utils';
 
 const EmployeeList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -32,12 +32,19 @@ const EmployeeList = () => {
   });
 
   const sortedEmployees = filteredEmployees.sort((a: EmployeeTypes, b: EmployeeTypes) => {
-    if (sortOption === 'alphabetical') {
+    if (sortOption === SortOptions.ALPHABETICAL) {
       return a.name.localeCompare(b.name);
-    } else if (sortOption === 'birthdate') {
+    } else if (sortOption === SortOptions.BIRTHDATE) {
       return compareAsc(new Date(a.birthDate), new Date(b.birthDate));
     }
     return 0;
+  });
+
+  const employeesWithLastInGroupFlag = sortedEmployees.map((employee, index, arr) => {
+    const currentYear = new Date(employee.birthDate).getFullYear();
+    const isLastInGroup =
+      index === arr.length - 1 || new Date(arr[index + 1].birthDate).getFullYear() !== currentYear;
+    return { ...employee, isLastInGroup };
   });
 
   return (
@@ -59,7 +66,9 @@ const EmployeeList = () => {
       ) : filteredEmployees.length === 0 ? (
         <ErrorPage message="Try to adjust your request" />
       ) : (
-        sortedEmployees.map(employee => <EmployeeCard key={employee.id} {...employee} />)
+        employeesWithLastInGroupFlag.map(employee => (
+          <EmployeeCard key={employee.id} {...employee} isLastInGroup={employee.isLastInGroup} />
+        ))
       )}
     </ul>
   );

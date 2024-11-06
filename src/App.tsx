@@ -5,7 +5,7 @@ import HomePage from './pages/HomePage/index';
 const App = () => {
   return (
     <Router>
-      <div className="bg-gray-200">
+      <div className="bg-gray-200 min-h-screen">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/employees/:id" element={<EmployeeProfile />} />

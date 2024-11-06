@@ -7,4 +7,5 @@ export type EmployeeTypes = {
   birthDate: string;
   phone: string;
   email: string;
+  isLastInGroup: boolean;
 };
