@@ -8,7 +8,7 @@ const ErrorPage = ({ message }: { message: string }) => {
   const title = isNoEmployeesMessage ? "We didn't find anyone" : 'Unexpected error occurred...';
 
   return (
-    <div className="flex flex-col items-center pt-40">
+    <div className="flex flex-col items-center pt-[128px]">
       <img className="mb-2" src={icon} alt="Icon" />
       <h2 className="text-lg font-semibold mb-2">{title}</h2>
       <span className="text-primary-gray mb-4">{message}</span>
