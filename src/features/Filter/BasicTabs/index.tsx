@@ -46,7 +46,7 @@ export default function BasicTabs() {
     localStorage.setItem('activeTab', value);
   }, [value]);
 
-  const positionsTabs = ['All', 'Designer', 'Analyst', 'Manager', 'iOS', 'Android'];
+  const positionsTabs = ['All', 'Designers', 'Analysts', 'Managers', 'iOS', 'Android'];
 
   const handleChange = (_: SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -70,11 +70,15 @@ export default function BasicTabs() {
           aria-label="basic tabs example"
           indicatorColor="primary"
           sx={{
+            marginTop: '-6px',
             '& .MuiTab-root': {
               textTransform: 'capitalize',
-              fontSize: '16px',
+              fontSize: '15px',
               fontFamily: '"Inter", sans-serif',
               color: '#97979B',
+              padding: '12px 10px',
+              minWidth: '54px',
+              top: '6px',
             },
             '& .MuiTab-root.Mui-selected': { color: '#050510' },
             '& .MuiTabs-indicator': { backgroundColor: '#6534FF' },

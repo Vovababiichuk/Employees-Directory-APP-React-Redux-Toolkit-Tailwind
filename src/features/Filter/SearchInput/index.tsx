@@ -1,4 +1,4 @@
-import { FormControl, InputAdornment, InputBase } from '@mui/material';
+import { FormControl, InputAdornment, InputBase, InputLabel } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchQuery, setSortOption } from '@/common/store/EmployeesSlice';
@@ -49,22 +49,30 @@ const SearchInput = () => {
   };
 
   return (
-    <FormControl variant="standard" sx={{ width: '100%', marginBottom: '18px' }}>
+    <FormControl variant="standard" sx={{ width: '100%', marginBottom: '8px' }}>
+      <InputLabel
+        htmlFor="search-input"
+        sx={{ fontSize: '30px', fontWeight: 500, color: '#050510', marginLeft: '8px' }}
+      >
+        Search
+      </InputLabel>
       <InputBase
         id="my-input"
         aria-describedby="my-helper-text"
-        placeholder="Search by name, tag, email..."
+        placeholder="Enter by name, tag, email..."
         value={searchQuery}
         onChange={handleChange}
         sx={{
-          py: '8px',
+          mt: '43px',
+          py: '6px',
           px: '12px',
           borderRadius: '16px',
           backgroundColor: '#f7f7f8',
+          fontSize: '15px',
         }}
         startAdornment={
           <InputAdornment position="start">
-            <img src={SearchIcon} alt="Search" className="w-7 h-6" />
+            <img src={SearchIcon} alt="Search" className="w-6 h-5" />
           </InputAdornment>
         }
         endAdornment={

@@ -32,38 +32,64 @@ const SortDialog = ({
       open={dialogOpen}
       onClose={handleSortClose}
       sx={{
-        '& .MuiPaper-root': {
-          borderRadius: 4,
-          padding: '6px',
-          maxWidth: '500px',
-          width: '300px',
+        '& .MuiDialog-paper': {
+          borderRadius: '16px',
+          maxWidth: '373px',
+          width: '373px',
+          height: '192px',
+          margin: '56px 16px',
           boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
+          overflowY: 'visible',
+          marginTop: '76px',
+          marginLeft: '2px',
+        },
+        '& .MuiDialogContent-root': {
+          padding: '0 24px 24px',
+          overflowY: 'visible',
         },
       }}
     >
       <DialogTitle
         sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
           fontFamily: 'Inter, sans-serif',
           fontWeight: 'bold',
+          marginBottom: '6px',
+          textAlign: 'center',
+          position: 'relative',
+          paddingTop: '22px',
         }}
       >
         Sorting
         <IconButton onClick={handleSortClose} aria-label="close">
-          <CloseIcon />
+          <CloseIcon
+            sx={{ fontSize: '1.2rem', position: 'absolute', left: '111px', top: '-3px' }}
+          />
         </IconButton>
       </DialogTitle>
       <DialogContent>
         <FormControl component="fieldset">
-          <RadioGroup value={selectedOption} onChange={onOptionChange}>
+          <RadioGroup
+            value={selectedOption}
+            onChange={onOptionChange}
+            sx={{
+              '& .MuiFormControlLabel-root': {
+                marginLeft: '-18px',
+              },
+            }}
+          >
             <FormControlLabel
+              sx={{
+                padding: '0px',
+                marginBottom: '18px',
+              }}
               value="alphabetical"
               control={<Radio sx={{ color: '#8a2be2', '&.Mui-checked': { color: '#8a2be2' } }} />}
               label="Alphabetical Order"
             />
             <FormControlLabel
+              sx={{
+                padding: '0px',
+              }}
               value="birthdate"
               control={<Radio sx={{ color: '#8a2be2', '&.Mui-checked': { color: '#8a2be2' } }} />}
               label="Birthdate Order"

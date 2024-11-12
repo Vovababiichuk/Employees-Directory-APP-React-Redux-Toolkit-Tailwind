@@ -26,22 +26,22 @@ const EmployeeProfile = () => {
   const age = calculateAge(birthDate);
 
   return (
-    <div className="max-w-6xl mx-auto bg-white min-h-screen">
+    <div className="max-w-7xl mx-auto bg-white min-h-screen">
       {status === Statuses.LOADING ? (
         <ProfileSkeleton />
       ) : status === Statuses.FAILED ? (
         <ErrorPage message={error || 'Failed to load employee data'} />
       ) : (
         <div>
-          <div className="relative flex flex-col gap-4 items-center text-center p-4 pt-20 pb-6 bg-primary-input-bg">
+          <div className="relative flex flex-col gap-4 items-center text-center p-4 pt-[72px] pb-5 bg-primary-input-bg">
             <Link
               to="/"
-              className="absolute top-8 left-4 hover:scale-110 transition-transform duration-300"
+              className="absolute top-6 left-8 hover:scale-110 transition-transform duration-300"
             >
               <img src={ArrowLeftIcon} alt="Arrow left icon" width={10} height={10} />
             </Link>
             <img
-              className="rounded-full object-cover w-[124px] h-[124px]"
+              className="rounded-full object-cover w-[104px] h-[104px] mb-2"
               src={avatar}
               alt="Avatar"
             />
@@ -53,8 +53,8 @@ const EmployeeProfile = () => {
               <span className="text-base text-secondary-gray">{position}</span>
             </div>
           </div>
-          <div className="flex flex-col gap-10 bg-white p-4 pt-6">
-            <div className="flex justify-between">
+          <div className="flex flex-col gap-10 bg-white p-4 pt-7">
+            <div className="flex justify-between mb-2">
               <span className="flex items-center gap-2">
                 <img src={StarIcon} alt="Star icon" width={20} height={20} />
                 {birthDateFormatted}

@@ -26,7 +26,8 @@ const EmployeeList = () => {
     );
 
     const positionMatches =
-      positionFilter === 'All' || employee.position.toLowerCase() === positionFilter.toLowerCase();
+      positionFilter === 'All' ||
+      employee.position.toLowerCase() === positionFilter.toLowerCase().replace(/s$/, '');
 
     return searchMatches && positionMatches;
   });
@@ -45,7 +46,7 @@ const EmployeeList = () => {
   });
 
   return (
-    <ul className="flex flex-col gap-4">
+    <ul className="flex flex-col gap-3 mt-[-3px]">
       {status === Statuses.LOADING ? (
         Array(17)
           .fill(0)
