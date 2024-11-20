@@ -7,36 +7,27 @@ import { setPositionFilter } from '@/common/store/EmployeesSlice';
 import { AppDispatch } from '@/common/store/store';
 import EmployeeList from '@/features/EmployeeList';
 
-interface TabPanelProps {
+type TabPanelProps = {
   children?: React.ReactNode;
-  index: string;
+  tabName: string;
   value: string;
-}
+};
 
-const CustomTabPanel = React.memo((props: TabPanelProps) => {
-  const { children, value, index, ...other } = props;
-
+const CustomTabPanel = React.memo(({ children, value, tabName, ...other }: TabPanelProps) => {
   return (
     <div
       role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
+      hidden={value !== tabName}
+      id={`simple-tabpanel-${tabName}`}
+      aria-labelledby={`simple-tab-${tabName}`}
       {...other}
     >
-      {value === index && <Box sx={{ paddingTop: 3 }}>{children}</Box>}
+      {value === tabName && <Box sx={{ paddingTop: 3 }}>{children}</Box>}
     </div>
   );
 });
 
-function a11yProps(name: string) {
-  return {
-    id: `simple-tab-${name}`,
-    'aria-controls': `simple-tabpanel-${name}`,
-  };
-}
-
-export default function BasicTabs() {
+export const BasicTabs = () => {
   const [value, setValue] = React.useState(() => {
     return localStorage.getItem('activeTab') || 'All';
   });
@@ -67,7 +58,6 @@ export default function BasicTabs() {
         <Tabs
           value={value}
           onChange={handleChange}
-          aria-label="basic tabs example"
           indicatorColor="primary"
           sx={{
             marginTop: '-6px',
@@ -89,16 +79,17 @@ export default function BasicTabs() {
               key={positionTab}
               label={positionTab}
               value={positionTab}
-              {...a11yProps(positionTab)}
+              id={`simple-tab-${positionTab}`}
+              aria-controls={`simple-tabpanel-${positionTab}`}
             />
           ))}
         </Tabs>
       </Box>
       {positionsTabs.map(positionTab => (
-        <CustomTabPanel key={positionTab} value={value} index={positionTab}>
+        <CustomTabPanel key={positionTab} value={value} tabName={positionTab}>
           <EmployeeList />
         </CustomTabPanel>
       ))}
     </Box>
   );
-}
+};
