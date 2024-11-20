@@ -1,4 +1,4 @@
-import BasicTabs from '@/features/Filter/BasicTabs';
+import { BasicTabs } from '@/features/Filter/BasicTabs';
 import SearchInput from '@/features/Filter/SearchInput';
 
 const HomePage = () => {
