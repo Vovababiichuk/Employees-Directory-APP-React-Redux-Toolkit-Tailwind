@@ -17,7 +17,9 @@ const EmployeeList = () => {
   );
 
   useEffect(() => {
-    if (status === Statuses.IDLE) dispatch(fetchEmployees());
+    if (status === Statuses.IDLE) {
+      dispatch(fetchEmployees());
+    }
   }, [status, dispatch]);
 
   const filteredEmployees = employees.list.filter((employee: EmployeeTypes) => {
