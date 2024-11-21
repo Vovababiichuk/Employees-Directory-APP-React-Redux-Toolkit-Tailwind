@@ -1,62 +1,28 @@
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import React, { SyntheticEvent, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { setPositionFilter } from '@/common/store/EmployeesSlice';
-import { AppDispatch } from '@/common/store/store';
+import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import EmployeeList from '@/features/EmployeeList';
 
-type TabPanelProps = {
-  children?: React.ReactNode;
-  tabName: string;
-  value: string;
-};
-
-const CustomTabPanel = React.memo(({ children, value, tabName, ...other }: TabPanelProps) => {
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== tabName}
-      id={`simple-tabpanel-${tabName}`}
-      aria-labelledby={`simple-tab-${tabName}`}
-      {...other}
-    >
-      {value === tabName && <Box sx={{ paddingTop: 3 }}>{children}</Box>}
-    </div>
-  );
-});
+const positionsTabs = ['All', 'Designers', 'Analysts', 'Managers', 'iOS', 'Android'];
 
 export const BasicTabs = () => {
-  const [value, setValue] = React.useState(() => {
-    return localStorage.getItem('activeTab') || 'All';
-  });
-  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const currentTab = params.get('tab') || 'All';
 
-  useEffect(() => {
-    localStorage.setItem('activeTab', value);
-  }, [value]);
-
-  const positionsTabs = ['All', 'Designers', 'Analysts', 'Managers', 'iOS', 'Android'];
-
-  const handleChange = (_: SyntheticEvent, newValue: string) => {
-    setValue(newValue);
-    dispatch(setPositionFilter(newValue));
-
-    const url = new URL(window.location.href);
-    if (newValue !== 'All') {
-      url.searchParams.set('tab', newValue);
-    } else {
-      url.searchParams.delete('tab');
-    }
-    window.history.pushState({}, '', url);
+  const handleChange = (_: React.SyntheticEvent, newValue: string) => {
+    params.set('tab', newValue);
+    navigate({ search: params.toString() }, { replace: true });
   };
 
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
-          value={value}
+          value={currentTab}
           onChange={handleChange}
           indicatorColor="primary"
           sx={{
@@ -85,11 +51,9 @@ export const BasicTabs = () => {
           ))}
         </Tabs>
       </Box>
-      {positionsTabs.map(positionTab => (
-        <CustomTabPanel key={positionTab} value={value} tabName={positionTab}>
-          <EmployeeList />
-        </CustomTabPanel>
-      ))}
+      <Box sx={{ paddingTop: 3 }}>
+        <EmployeeList currentTab={currentTab.toLowerCase()} />
+      </Box>
     </Box>
   );
 };

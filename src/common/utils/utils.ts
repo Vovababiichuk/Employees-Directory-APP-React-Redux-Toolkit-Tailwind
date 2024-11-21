@@ -1,5 +1,4 @@
 import { differenceInYears, format } from 'date-fns';
-import { EmployeesState } from '@/common/store/EmployeesSlice';
 
 export enum Statuses {
   IDLE = 'IDLE',
@@ -24,30 +23,4 @@ export const calculateAge = (birthDate: Date | string | undefined): number | nul
   if (!birthDate) return null;
   const dateObj = new Date(birthDate);
   return isNaN(dateObj.getTime()) ? null : differenceInYears(new Date(), dateObj);
-};
-
-export const saveToLocalStorage = <T>(key: string, value: T): void => {
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch (error) {
-    console.error('Error saving to localStorage:', error);
-  }
-};
-
-export const loadFromLocalStorage = <T>(key: string): T | null => {
-  try {
-    const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : null;
-  } catch (error) {
-    console.error('Failed to parse JSON from localStorage', error);
-    return null;
-  }
-};
-
-export const loadSortOption = (): EmployeesState['sortOption'] => {
-  const sortOption = loadFromLocalStorage('sortOption');
-  if (sortOption === SortOptions.ALPHABETICAL || sortOption === SortOptions.BIRTHDATE) {
-    return sortOption;
-  }
-  return SortOptions.ALPHABETICAL;
 };

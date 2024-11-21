@@ -10,11 +10,17 @@ import { EmployeeTypes } from '@/entities/employee/types';
 import EmployeeCard from '@/features/EmployeeList/components/EmployeeCard';
 import ErrorPage from '@/pages/ErrorPage';
 
-const EmployeeList = () => {
+type EmployeeListProps = {
+  currentTab: string;
+};
+
+const EmployeeList = ({ currentTab }: EmployeeListProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { employees, status, error, searchQuery, positionFilter, sortOption } = useSelector(
-    (state: RootState) => state.employees,
-  );
+  const { employees, status, error } = useSelector((state: RootState) => state.employees);
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const searchQuery = urlParams.get('search')?.toLowerCase() || '';
+  const sortOption = urlParams.get('sort') || SortOptions.ALPHABETICAL;
 
   useEffect(() => {
     if (status === Statuses.IDLE) {
@@ -24,12 +30,11 @@ const EmployeeList = () => {
 
   const filteredEmployees = employees.list.filter((employee: EmployeeTypes) => {
     const searchMatches = [employee.name, employee.email, employee.tag].some(field =>
-      field.toLowerCase().includes(searchQuery.toLowerCase()),
+      field.toLowerCase().includes(searchQuery),
     );
 
     const positionMatches =
-      positionFilter === 'All' ||
-      employee.position.toLowerCase() === positionFilter.toLowerCase().replace(/s$/, '');
+      currentTab === 'all' || employee.position.toLowerCase() === currentTab.replace(/s$/, '');
 
     return searchMatches && positionMatches;
   });
@@ -63,11 +68,16 @@ const EmployeeList = () => {
           ))
       ) : status === Statuses.FAILED ? (
         <ErrorPage message={error || 'Failed to load employee data'} />
-      ) : filteredEmployees.length === 0 ? (
+      ) : employeesWithLastInGroupFlag.length === 0 ? (
         <ErrorPage message="Try to adjust your request" />
       ) : (
         employeesWithLastInGroupFlag.map(employee => (
-          <EmployeeCard key={employee.id} {...employee} isLastInGroup={employee.isLastInGroup} />
+          <EmployeeCard
+            key={employee.id}
+            {...employee}
+            isLastInGroup={employee.isLastInGroup}
+            sortOption={sortOption}
+          />
         ))
       )}
     </ul>

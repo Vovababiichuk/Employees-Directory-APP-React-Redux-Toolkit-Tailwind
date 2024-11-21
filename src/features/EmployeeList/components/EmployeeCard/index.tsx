@@ -1,12 +1,11 @@
 import { Divider } from '@mui/material';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { RootState } from '@/common/store/store';
 import { formatDate, SortOptions } from '@/common/utils/utils';
 import { EmployeeTypes } from '@/entities/employee/types';
 
 interface EmployeeCardProps extends EmployeeTypes {
   isLastInGroup: boolean;
+  sortOption: string;
 }
 
 const EmployeeCard = ({
@@ -17,9 +16,8 @@ const EmployeeCard = ({
   tag,
   birthDate,
   isLastInGroup,
+  sortOption,
 }: EmployeeCardProps) => {
-  const { sortOption } = useSelector((state: RootState) => state.employees);
-
   const birthDateFormatted = birthDate ? formatDate(birthDate, 'd MMM') : '';
   const birthYearFormatted = birthDate ? formatDate(birthDate, 'yyyy') : '';
 
