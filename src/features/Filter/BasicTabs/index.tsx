@@ -2,20 +2,16 @@ import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import EmployeeList from '@/features/EmployeeList';
+import { useURLParams } from '@/common/hooks/useURLParams';
 
 const positionsTabs = ['All', 'Designers', 'Analysts', 'Managers', 'iOS', 'Android'];
 
 export const BasicTabs = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const currentTab = params.get('tab') || 'All';
+  const [currentTab, setCurrentTab] = useURLParams('tab', 'All');
 
   const handleChange = (_: React.SyntheticEvent, newValue: string) => {
-    params.set('tab', newValue);
-    navigate({ search: params.toString() }, { replace: true });
+    setCurrentTab(newValue);
   };
 
   return (
@@ -36,24 +32,19 @@ export const BasicTabs = () => {
               minWidth: '54px',
               top: '6px',
             },
-            '& .MuiTab-root.Mui-selected': { color: '#050510' },
-            '& .MuiTabs-indicator': { backgroundColor: '#6534FF' },
+            '& .MuiTab-root.Mui-selected': { color: '#050510', fontWeight: 600 },
+            '& .MuiTabs-scroller': {
+              display: 'flex',
+              justifyContent: 'flex-start',
+            },
           }}
         >
-          {positionsTabs.map(positionTab => (
-            <Tab
-              key={positionTab}
-              label={positionTab}
-              value={positionTab}
-              id={`simple-tab-${positionTab}`}
-              aria-controls={`simple-tabpanel-${positionTab}`}
-            />
+          {positionsTabs.map((tab, idx) => (
+            <Tab label={tab} value={tab} key={idx} />
           ))}
         </Tabs>
       </Box>
-      <Box sx={{ paddingTop: 3 }}>
-        <EmployeeList currentTab={currentTab.toLowerCase()} />
-      </Box>
+      <EmployeeList currentTab={currentTab.toLowerCase()} />
     </Box>
   );
 };

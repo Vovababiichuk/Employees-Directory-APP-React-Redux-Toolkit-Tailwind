@@ -9,3 +9,9 @@ export type EmployeeTypes = {
   email: string;
   isLastInGroup: boolean;
 };
+
+export type QueryParamsState = {
+  tab: string;
+  sort: string;
+  search: string;
+};

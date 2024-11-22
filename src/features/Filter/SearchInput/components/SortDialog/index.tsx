@@ -23,7 +23,8 @@ const SortDialog = ({
   handleSortOptionChange,
 }: SortDialogType) => {
   const onOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    handleSortOptionChange(event.target.value);
+    const newSortOption = event.target.value;
+    handleSortOptionChange(newSortOption);
     handleSortClose();
   };
 

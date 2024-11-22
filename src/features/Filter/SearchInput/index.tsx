@@ -1,57 +1,14 @@
 import { FormControl, InputAdornment, InputBase, InputLabel } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useURLParams } from '@/common/hooks/useURLParams';
 import SortDialog from './components/SortDialog';
 import SearchIcon from '/icons/search.svg';
 import SegmentIcon from '/icons/segment.svg';
 
 const SearchInput = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState(() => {
-    const params = new URLSearchParams(location.search);
-    return params.get('search') || '';
-  });
-  const [selectedSortOption, setSelectedSortOption] = useState(() => {
-    const params = new URLSearchParams(location.search);
-    return params.get('sort') || 'alphabetical';
-  });
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    setSearchQuery(params.get('search') || '');
-    setSelectedSortOption(params.get('sort') || 'alphabetical');
-  }, [location.search]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newQuery = e.target.value;
-    setSearchQuery(newQuery);
-
-    const params = new URLSearchParams(location.search);
-    if (newQuery) {
-      params.set('search', newQuery);
-    } else {
-      params.delete('search');
-    }
-    navigate({ search: params.toString() }, { replace: true });
-  };
-
-  const handleSortClick = () => {
-    setDialogOpen(true);
-  };
-
-  const handleSortClose = () => {
-    setDialogOpen(false);
-  };
-
-  const handleSortOptionChange = (value: string) => {
-    setSelectedSortOption(value);
-    const params = new URLSearchParams(location.search);
-    params.set('sort', value);
-    navigate({ search: params.toString() }, { replace: true });
-  };
+  const [search, setSearch] = useURLParams('search', '');
+  const [sort, setSort] = useURLParams('sort', 'alphabetical');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
     <FormControl variant="standard" sx={{ width: '100%', marginBottom: '8px' }}>
@@ -62,11 +19,10 @@ const SearchInput = () => {
         Search
       </InputLabel>
       <InputBase
-        id="my-input"
-        aria-describedby="my-helper-text"
+        id="search-input"
         placeholder="Enter by name, tag, email..."
-        value={searchQuery}
-        onChange={handleChange}
+        value={search}
+        onChange={e => setSearch(e.target.value)}
         sx={{
           mt: '43px',
           py: '6px',
@@ -84,17 +40,17 @@ const SearchInput = () => {
           <InputAdornment
             position="end"
             className="cursor-pointer transition-transform duration-300 hover:scale-110"
-            onClick={handleSortClick}
+            onClick={() => setIsDialogOpen(true)}
           >
             <img src={SegmentIcon} alt="Segment" className="w-7 h-5" />
           </InputAdornment>
         }
       />
       <SortDialog
-        dialogOpen={dialogOpen}
-        handleSortClose={handleSortClose}
-        selectedOption={selectedSortOption}
-        handleSortOptionChange={handleSortOptionChange}
+        dialogOpen={isDialogOpen}
+        handleSortClose={() => setIsDialogOpen(false)}
+        selectedOption={sort}
+        handleSortOptionChange={setSort}
       />
     </FormControl>
   );

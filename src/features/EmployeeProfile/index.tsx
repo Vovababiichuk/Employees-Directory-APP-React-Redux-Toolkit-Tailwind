@@ -13,6 +13,7 @@ import StarIcon from '/icons/star.svg';
 const EmployeeProfile = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
+  const { tab, sort, search } = useSelector((state: RootState) => state.employees);
   const { status, error, employees } = useSelector((state: RootState) => state.employees);
   const { selected } = employees;
 
@@ -35,7 +36,7 @@ const EmployeeProfile = () => {
         <div>
           <div className="relative flex flex-col gap-4 items-center text-center p-4 pt-[72px] pb-5 bg-primary-input-bg">
             <Link
-              to="/"
+              to={`/?${tab ? `tab=${tab}` : ''}${search ? `&search=${search}` : ''}${sort ? `&sort=${sort}` : ''}`}
               className="absolute top-6 left-8 hover:scale-110 transition-transform duration-300"
             >
               <img src={ArrowLeftIcon} alt="Arrow left icon" width={10} height={10} />

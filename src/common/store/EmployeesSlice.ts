@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetchEmployeeById, fetchEmployees } from '@/common/utils/gateway';
 import { Statuses } from '@/common/utils/utils';
-import { EmployeeTypes } from '@/entities/employee/types';
+import { EmployeeTypes, QueryParamsState } from '@/entities/employee/types';
 
 export type EmployeesState = {
   employees: {
@@ -10,6 +10,9 @@ export type EmployeesState = {
   };
   status: keyof typeof Statuses;
   error: string | null;
+  tab: string;
+  sort: string;
+  search: string;
 };
 
 const initialState: EmployeesState = {
@@ -19,18 +22,28 @@ const initialState: EmployeesState = {
   },
   status: Statuses.IDLE,
   error: null,
+  tab: '',
+  sort: '',
+  search: '',
 };
 
 const employeesSlice = createSlice({
   name: 'employees',
   initialState,
-  reducers: {},
+  reducers: {
+    setQueryParams(state, action: PayloadAction<QueryParamsState>) {
+      const { tab = '', sort = '', search = '' } = action.payload;
+      state.tab = tab;
+      state.sort = sort;
+      state.search = search;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(fetchEmployees.pending, state => {
         state.status = Statuses.LOADING;
       })
-      .addCase(fetchEmployees.fulfilled, (state, action) => {
+      .addCase(fetchEmployees.fulfilled, (state, action: PayloadAction<EmployeeTypes[]>) => {
         state.status = Statuses.SUCCEEDED;
         state.employees.list = action.payload;
       })
@@ -38,7 +51,7 @@ const employeesSlice = createSlice({
         state.status = Statuses.FAILED;
         state.error = action.payload || 'Failed to fetch employees';
       })
-      .addCase(fetchEmployeeById.fulfilled, (state, action) => {
+      .addCase(fetchEmployeeById.fulfilled, (state, action: PayloadAction<EmployeeTypes>) => {
         state.status = Statuses.SUCCEEDED;
         state.employees.selected = action.payload;
       })
@@ -49,4 +62,5 @@ const employeesSlice = createSlice({
   },
 });
 
+export const { setQueryParams } = employeesSlice.actions;
 export default employeesSlice.reducer;
