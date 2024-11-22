@@ -18,8 +18,8 @@ const EmployeeList = ({ currentTab }: { currentTab: string }) => {
   const [searchParams] = useSearchParams();
 
   const search = searchParams.get('search')?.toLowerCase() || '';
-  const sort = searchParams.get('sort')?.toLowerCase() || SortOptions.ALPHABETICAL;
-  const tab = searchParams.get('tab')?.toLowerCase() || '';
+  const sort = searchParams.get('sort') || SortOptions.ALPHABETICAL;
+  const tab = searchParams.get('tab') || '';
 
   useEffect(() => {
     if (status === Statuses.IDLE) {

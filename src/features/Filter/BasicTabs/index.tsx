@@ -10,6 +10,8 @@ const positionsTabs = ['All', 'Designers', 'Analysts', 'Managers', 'iOS', 'Andro
 export const BasicTabs = () => {
   const [currentTab, setCurrentTab] = useURLParams('tab', 'All');
 
+  console.log('currentTab', currentTab);
+
   const handleChange = (_: React.SyntheticEvent, newValue: string) => {
     setCurrentTab(newValue);
   };

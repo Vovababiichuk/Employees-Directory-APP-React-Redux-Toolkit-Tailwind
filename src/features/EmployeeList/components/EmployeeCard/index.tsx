@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import { formatDate, SortOptions } from '@/common/utils/utils';
 import { EmployeeTypes } from '@/entities/employee/types';
 
-interface EmployeeCardProps extends EmployeeTypes {
+type EmployeeCardProps = EmployeeTypes & {
   isLastInGroup: boolean;
   sortOption: string;
-}
+};
 
 const EmployeeCard = ({
   id,
